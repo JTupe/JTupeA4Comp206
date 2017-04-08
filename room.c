@@ -56,22 +56,41 @@ main() {
   //method to read inventory.csv
   char *getInventory()
   {
-    FILE *inventory;
-    inventory = fopen("inventory.txt", "r+");
-    int char = 0;
-    int inventory[3];
-    int len = 0;
+    FILE *fileInventory;
+    fileInventory = fopen("inventory.txt", "r+");
+    int manna[1], gold[1];
     
-    //while(char != EOF && char != '\n')
-    //{
-      //fgets(
-    for(int i = 0; i < 3; i++)
+    if(fileInventory == NULL) { perror("Error opening inventory file"); return(-1); }
+    
+    while(!feof(fileInventory))
     {
-      fscanf(inventory, "%[^','], %d, %d, %d", &inventory
-    } 
+      //reads fileInventory, ignores commas, saves each int into manna and gold
+      fscanf(fileInventory, "%[^','], %d, %d", &manna, &gold);
+    }
+  }
   
   void DROP()
   {
+   //make a string to store the number of gold the user wants to drop. The string is size 100 because the user cannot drop more than 100 gold pieces
+   char *goldDrop[100];
+   int intGoldDrop = 0;
+   int intMannaAdd = 0;
+   
+   //read user input to extract the number of gold pieces to drop
+   for(int i = 0; i < 100 && input!='+'; i++);
+    for(int j = i; i < 100 && input !='&'; i++)
+    {
+      goldDrop[i] = input[i];
+    }
     
+    intGoldDrop = atoi(goldDrop);
+    // calculate how much manna we need to add to the players inventory
+    intMannaAdd = intGoldDrop / 2;
+    
+    //SOMEHOW Add manna to the inventory file. Deduct gold from inventory file.
+    manna = manna + intMannaAdd;
+    gold = gold - intGoldDrop;
+    //SOMEHOW set the gold variable in the resource file to
+    gold = gold + intGoldDrop;
   }
 }

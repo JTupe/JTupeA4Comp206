@@ -1,0 +1,39 @@
+<html>
+	<head>
+		<title> The Room</title>
+	</head>
+
+	<h1>Welcome to the room!</h1>
+        <p>This was made by Alice, Anders, and Justine </p>
+        <p><img src="th.jpg"></p>
+
+	<form action="transporter.py" method="post" style="display: inLine">
+	<input type="hidden" name="inventory" value="1.0">
+	<input type="hidden" name="URL" value="https://www.cs.mcgill.ca/~aturim/cgi-bin/room.cgi">
+	<input type="submit" value="north">
+	</form><br>
+			
+	<form action="transporter.py" method="post" style="display: inLine">
+        <input type="hidden" name="inventory" value="1.0">
+        <input type="hidden" name="URL" value="https://www.cs.mcgill.ca/~aturim/cgi-bin/room.cgi">                     <input type="submit" value="west">
+	</form><br>
+
+	<form action="transporter.py" method="post" style="display: inLine">
+        <input type="hidden" name="inventory" value="1.0">
+        <input type="hidden" name="URL" value="https://www.cs.mcgill.ca/~aturim/cgi-bin/room.cgi">                     <input type="submit" value="east">
+	 </form><br>
+
+	<form action="transporter.py" method="post" style="display: inLine">
+        <input type="hidden" name="inventory" value="1.0">
+        <input type="hidden" name="URL" value="https://www.cs.mcgill.ca/~aturim/cgi-bin/room.cgi">                     <input type="submit" value="south">
+        </form><br>
+
+	<form action="room.cgi" method="post" id="textbox" style="display: inline">
+	<input type="hidden" name="inventory" value="1.0">
+	<input type="text" value="" name="command">
+	</form>
+	
+	<button type="submit" form="textbox" value="Submit Text">submit</button>
+	<br>
+	<br>
+</html>

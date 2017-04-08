@@ -11,14 +11,18 @@ main() {
   //create an array, input, of arbritary length. We will store the entire String of the user's input into input array
   //create an array, command, of arbritrary length to store only the command of the user's input
   char input[80], command[40];
+  //make a string to store the number of gold the user wants to drop. 
+  //The string is size 3 because the user cannot drop more than a 3 digit (100) gold pieces
+  char goldDrop[3];
+  int intGoldDrop = 0;
+  int intMannaAdd = 0;
   
   //reads from stdin for 80 chars and saves into input array
   fgets(input, 80, stdin)
   {
-    //reads input until the first '=' AKA http://www.cs.mcgill.ca/~USERNAME/cgi-bin/room.cgi?command=STRING&inventory=_,_ now becomes
-    //STRING&inventory=_,_
+    //reads input until the first '='
     for(int i = 0; i<80 && input!='='; i++);
-    //reads the String containing the command by reading input from '=' until '&'
+    //reads the String until first '&'
     for(int j = i; i<80 && input[i]!='&'; i++)
     {
       //saves the command into command array
@@ -26,7 +30,16 @@ main() {
     }
     //turns command array into a string by adding a CR
     command[i] = "\0";
-  }
+    
+    //read user input to extract the number of gold pieces to drop
+    //reads input until next '+'
+    for(int i = 0; i < 100 && input!='+'; i++);
+    //reads input until next '&'
+    for(int j = i; i < 100 && input !='&'; i++)
+    {
+      //saves 
+      goldDrop[i] = input[i];
+    }
   
   char * DROP = "DROP", PLAY = "PLAY", EXIT = "EXIT", REFRESH = "REFRESH";
   
@@ -71,17 +84,6 @@ main() {
   
   void DROP()
   {
-   //make a string to store the number of gold the user wants to drop. The string is size 100 because the user cannot drop more than 100 gold pieces
-   char *goldDrop[100];
-   int intGoldDrop = 0;
-   int intMannaAdd = 0;
-   
-   //read user input to extract the number of gold pieces to drop
-   for(int i = 0; i < 100 && input!='+'; i++);
-    for(int j = i; i < 100 && input !='&'; i++)
-    {
-      goldDrop[i] = input[i];
-    }
     
     intGoldDrop = atoi(goldDrop);
     // calculate how much manna we need to add to the players inventory

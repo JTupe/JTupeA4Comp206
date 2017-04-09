@@ -4,26 +4,20 @@
 // include the methods of the file //
 
 main() {
-// use fgets to read from stdin
-// if the user sends an invalid command, send an error
-// assuming the command is in the following format: http://www.cs.mcgill.ca/~USERNAME/cgi-bin/room.cgi?command=STRING&inventory=INT,INT,INT
-  
-  //create an array, input, of arbritary length. We will store the entire String of the user's input into input array
-  //create an array, command, of arbritrary length to store only the command of the user's input
-  char input[80], command[40];
-  //make a string to store the number of gold the user wants to drop. 
-  //The string is size 3 because the user cannot drop more than a 3 digit (100) gold pieces
+  char input[200];
   char goldDrop[3];
-  int intGoldDrop = 0;
-  int intMannaAdd = 0;
+  int n = atoi(getenv("CONTENT_LENGTH"));
   
-  //reads from stdin for 80 chars and saves into input array
-  fgets(input, 80, stdin)
-  {
+  fgets(input,n,stdin)
+    
+  if(input == "NULL") { fprintf("There was an error reading the given input. Recall that only: DROP n, PLAY, EXIT or REFRESH are valid inputs."); }
+    
+  //data received will have the following format: 
+    //file:///C:/Users/JustineTupe/Desktop/index.htm?command=DROP+10&firstname=Mickey&lastname=Mouse
     //reads input until the first '='
-    for(int i = 0; i<80 && input!='='; i++);
+    for(int i = 0; i<200 && input!='='; i++);
     //reads the String until first '&'
-    for(int j = i; i<80 && input[i]!='&'; i++)
+    for(int j = i; i<200 && input[i]!='&'; i++)
     {
       //saves the command into command array
       command[i] = input[i];

@@ -131,6 +131,9 @@ main(char [] inputCommand, char[] userInventory) {
     fprintf("There was an error reading the given input. Recall that only: DROP n, PLAY, EXIT or REFRESH are valid inputs.");
   }
   
+  // we could alt create source files with the methods updateResources and updateInventory and compile it into room.o
+  gcc -g -Wall room.c -o room
+            
   //method to update resources.csv
   void updateResources(int drop)
   {

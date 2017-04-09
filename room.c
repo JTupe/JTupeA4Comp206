@@ -137,7 +137,7 @@ main(char [] inputCommand, char[] userInventory) {
     //change gold variable in the resource file to
     char resources[3];
     FILE *fileResources;
-    fileResources = fopen("resources.txt", "r+");
+    fileResources = fopen("resources.csv", "r+");
     if(fileResources == NULL) { perror("Error opening resource file"); return(-1); }
     
     fscanf(fileResources, "%d,%[^,],%d,%[^,],%d,%[^,]", &resources[0], &resources[1], &resources[2]);
@@ -158,7 +158,7 @@ main(char [] inputCommand, char[] userInventory) {
     
      //read and write to the inventory file. Deduct gold from inventory file.
      FILE *fileInventory;
-     fileInventory = fopen("inventory.txt", "r+");
+     fileInventory = fopen("inventory.csv", "r+");
      if(fileInventory == NULL) { perror("Error opening inventory file"); return(-1); }
     
      fscanf(fileInventory, "%d,%[^,],%d,%[^,]", &inventory[0], &inventory[1]);

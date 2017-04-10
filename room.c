@@ -1,6 +1,7 @@
 #include<stdlib.h>
 #include<stdio.h>
 
+//Alice: you saved the resources and the inventory csv as .txt, why? I think we can save them as .csv?
 // include the methods of the file //
 void updateInventory(int);
 void updateResources(int);
@@ -35,7 +36,19 @@ main(char inputCommand[], char userInventory[]) {
     }
     //turns command array into a string by adding a CR
     command[i] = "\0";
+    //Alice: I think the loop is not saving the drop, but copying everything before the "="
+    /*instead should be 
+    for (int i = 0; input[i]!='='; i++);{
+     for (int j = i; input[i]!='+'; j++){
+      command[j] = input[i];
+     }
+    }
+    Command[j] = "\0"
+    */
     
+
+
+
     //read user input to extract the number of gold pieces to drop
     //reads input until next '+'
     for(int k = 0; k < 200 && input[k]!='+'; k++);
@@ -48,6 +61,7 @@ main(char inputCommand[], char userInventory[]) {
     goldDrop = atoi(goldDropArray);
   }
 }
+  //Alice: same thing for this loop, need to change to goldDropArray[j] = input[i]
   //Command = "drop", GoldDrop = 10;
 
 
@@ -154,6 +168,7 @@ main(char inputCommand[], char userInventory[]) {
     fileResources = fopen("resources.csv", "r+");
     if(fileResources == NULL) { perror("Error opening resource file"); return(-1); }
     
+    //Alice: I think in order to read and overwrite the csv, you put fopen("resources,csv", "w+")
     fscanf(fileResources, "%d,%[^,],%d,%[^,],%d,%[^,]", &resources[0], &resources[1], &resources[2]);
     //manna, gold, occupied
     resources[1] = resources[1] + drop;

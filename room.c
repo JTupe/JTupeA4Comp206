@@ -48,7 +48,9 @@ main(char inputCommand[], char userInventory[]) {
     goldDrop = atoi(goldDropArray);
   }
 }
-  
+  //Command = "drop", GoldDrop = 10;
+
+
   char * DROP = "DROP", PLAY = "PLAY", EXIT = "EXIT", REFRESH = "REFRESH";
   
   if(strncmp(command, DROP, 4) == 0)
@@ -146,6 +148,7 @@ main(char inputCommand[], char userInventory[]) {
   void updateResources(int drop)
   {
     //change gold variable in the resource file to
+    //Alice: instead of char, you can do int resources
     char resources[3];
     FILE *fileResources;
     fileResources = fopen("resources.csv", "r+");
@@ -155,11 +158,14 @@ main(char inputCommand[], char userInventory[]) {
     //manna, gold, occupied
     resources[1] = resources[1] + drop;
     //NEED TO WRITE TO THE FILE
+    //Alice: "%d,%[^,],%d,%[^,],%d" too many commas
 
     char comma = ",";
     fprintf(fileResources, "%d, %c, %d, %c", resources[0], comma, resources[1], comma, resources[2]);
    }
-            
+   //Alice: "%d, %c, %d, %c, &d" to save the 3rd number
+   //Alice: when finish reading the csv, you need to fclose(fileResources);  
+          
    void updateInventory(int drop)
    {
      char inventory[2];

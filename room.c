@@ -152,7 +152,12 @@ main(char inputCommand[], char userInventory[]) {
      printf("</html>");
   }  
   else {
-    fprintf("There was an error reading the given input. Recall that only: DROP n, PLAY, EXIT or REFRESH are valid inputs.");
+	FILE *website = fopen("room.html", r+);
+	  printf("Content-Type:text/html\n\n");
+	  printf("<html>");
+	  fprintf(website, "%s", "There was an error reading the given input. Recall that only: DROP n, PLAY, EXIT or REFRESH are valid inputs.");
+	  fclose(website); 
+	  printf("</html>");
   }
   
   // we could alt create source files with the methods updateResources and updateInventory and compile it into room.o
@@ -162,24 +167,21 @@ main(char inputCommand[], char userInventory[]) {
   void updateResources(int drop)
   {
     //change gold variable in the resource file to
-    //Alice: instead of char, you can do int resources
-    char resources[3];
+    int resources[3];
     FILE *fileResources;
     fileResources = fopen("resources.csv", "r+");
     if(fileResources == NULL) { perror("Error opening resource file"); return(-1); }
     
-    //Alice: I think in order to read and overwrite the csv, you put fopen("resources,csv", "w+")
-    fscanf(fileResources, "%d,%[^,],%d,%[^,],%d,%[^,]", &resources[0], &resources[1], &resources[2]);
+    fscanf(fileResources, "%d,%[^,],%d,%[^,],%d", &resources[0], &resources[1], &resources[2]);
     //manna, gold, occupied
     resources[1] = resources[1] + drop;
     //NEED TO WRITE TO THE FILE
-    //Alice: "%d,%[^,],%d,%[^,],%d" too many commas
 
     char comma = ",";
-    fprintf(fileResources, "%d, %c, %d, %c", resources[0], comma, resources[1], comma, resources[2]);
+    fprintf(fileResources, "%d, %c, %d, %c, %d", resources[0], comma, resources[1], comma, resources[2]);
+	  
+	  fclose(fileResources);
    }
-   //Alice: "%d, %c, %d, %c, &d" to save the 3rd number
-   //Alice: when finish reading the csv, you need to fclose(fileResources);  
           
    void updateInventory(int drop)
    {
@@ -200,5 +202,6 @@ main(char inputCommand[], char userInventory[]) {
      
      char comma = ",";
      fprintf(fileInventory, "%d, %c, %d, %c", inventory[0], comma, inventory[1], comma);
+	   fclose(fileInventory);
    }
 }

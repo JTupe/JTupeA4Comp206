@@ -1,9 +1,9 @@
 #include<stdlib.h>
 #include<stdio.h>
 
-//Alice: you saved the resources and the inventory csv as .txt, why? I think we can save them as .csv?
 // include the methods of the file //
 void updateInventory(int);
+void exitUpdateInventory(char * resourceFile);
 void updateResources(int);
 
 main(char inputCommand[], char userInventory[]) {
@@ -25,7 +25,7 @@ main(char inputCommand[], char userInventory[]) {
 	}
     
     //data received will have the following format: 
-    //file:///C:/Users/JustineTupe/Desktop/index.htm?command=DROP+10&firstname=Mickey&lastname=Mouse
+    //file:///C:/Users/JustineTupe/Desktop/index.htm?command=DROP+10
     //reads input until the first '='
     for(int i = 0; input[i]!='='; i++);{
     //reads the String until first '&'
@@ -37,21 +37,9 @@ main(char inputCommand[], char userInventory[]) {
     }
     //turns command array into a string by adding a CR
     command[j] = "\0";
-    //Alice: I think the loop is not saving the drop, but copying everything before the "="
-    /*instead should be 
-    for (int i = 0; input[i]!='='; i++);{
-     for (int j = i; input[i]!='+'; j++){
-      command[j] = input[i];
-     }
-    }
-    Command[j] = "\0"
-    */
-    
-
-
 
     //read user input to extract the number of gold pieces to drop
-    //reads input until next '+'
+    //reads input until first '+'
     for(int k = 0; input[k]!='+'; k++);{
     //reads input until next '&'
     for(int m = k; input[m]!='&'; k++)
@@ -110,6 +98,7 @@ main(char inputCommand[], char userInventory[]) {
 	  FILE *website = fopen("room.html", r+);
     //execute code for EXIT
     //must update the resources file so that the room is unoccupied (resources[3] = 0)
+	  updateInventory();
 	  printf("%s", "<html>");
 	  printf("%s", "<head><title>Bye! Au Revoir!</title><h1>Aw shucks! Leaving already? Prison isn't for everyone. Come back later, if you dare.</h1>");
 	  printf("%s", "<h2>Quel dommamge! Vous-partez deja? Je comprends. La prison ce n'est pas pour tout le monde. Reviennez plutard, si vous l'osez faire.");
@@ -168,7 +157,7 @@ main(char inputCommand[], char userInventory[]) {
           
    void updateInventory(int drop)
    {
-     char inventory[2];
+     int inventory[2];
      
      if(drop != 0) { int manAdd = drop / 2; }
      else { int manAdd = 0; }
@@ -187,4 +176,49 @@ main(char inputCommand[], char userInventory[]) {
      fprintf(fileInventory, "%d, %c, %d, %c", inventory[0], comma, inventory[1], comma);
 	   fclose(fileInventory);
    }
+
+    void exitUpdateInventory()
+    {
+	// open, read and save the players inventory
+	int inventory[2];
+	FILE *fileInventory;
+     	fileInventory = fopen("inventory.csv", "r+");
+     	
+	//send error if inventory file cannot be opened
+	if(fileInventory == NULL) 
+	{ 
+		perror("Error opening inventory file"); 
+		fclose(fileInventory); 
+		return(-1); 
+	}
+	    
+	else {
+		//read the player's inventory
+		fscanf(fileInventory, "%d,%[^,],%d,%[^,]", &inventory[0], &inventory[1]); 
+		
+		//open the room's resources
+		int resources[3];
+    		FILE *fileResources;
+    		fileResources = fopen("resources.csv", "r+");
+		
+		//send error if the resource file cannot be opened
+    		if(fileResources == NULL) { perror("Error opening resource file"); fclose(fileResources); return(-1); }
+    		
+    		else 
+		{ 
+			//read the room's resources
+			fscanf(fileResources, "%d,%[^,],%d,%[^,],%d", &resources[0], &resources[1], &resources[2]);
+			//update the room's resources. Resources: manna, gold, occupied. Inventory: manna, gold
+			resource[0] = resource[0] + inventory[0]; //updates the manna
+			resource[1] = resource[1] + inventory[1]; //updates the gold
+			resource[2] = 0; //updates room as unoccupied
+			
+			//write to resource file to update it
+    			char comma = ",";
+    			fprintf(fileResources, "%d, %c, %d, %c, %d", resources[0], comma, resources[1], comma, resources[2]);
+	    	}
+	    }
+	    fclose(fileInventory);
+	    fclose(fileResources);
+    }
 }

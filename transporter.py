@@ -16,4 +16,6 @@ with open('inventory.csv', 'r') as file:
 
 
 with open('example.csv', 'r+') as example:
+
 	reader                                                                                                     
+	#get the csv, and have access to inventory (read from url), 

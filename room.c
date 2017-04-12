@@ -3,8 +3,8 @@
 
 // include the methods of the file //
 void updateInventory(int);
-void exitUpdateInventory(char * resourceFile);
 void updateResources(int);
+void exitUpdateInventory(void);
 
 main(char inputCommand[], char userInventory[]) {
   char input[200];
@@ -98,7 +98,7 @@ main(char inputCommand[], char userInventory[]) {
 	  FILE *website = fopen("room.html", r+);
     //execute code for EXIT
     //must update the resources file so that the room is unoccupied (resources[3] = 0)
-	  updateInventory();
+	  ExitUpdateInventory();
 	  printf("%s", "<html>");
 	  printf("%s", "<head><title>Bye! Au Revoir!</title><h1>Aw shucks! Leaving already? Prison isn't for everyone. Come back later, if you dare.</h1>");
 	  printf("%s", "<h2>Quel dommamge! Vous-partez deja? Je comprends. La prison ce n'est pas pour tout le monde. Reviennez plutard, si vous l'osez faire.");
@@ -109,16 +109,9 @@ main(char inputCommand[], char userInventory[]) {
   else if(strncmp(commmand, REFRESH, 7) == 0)
   {
     FILE *website = fopen("room.html", r+);
-    int ch;
-    
-    if(website == NULL);
-    {
-      printf("%s", "<head><title>ERROR</title></head>");
-      printf("%s", "<body><p>Unable to open file!</p></body>");
-    }
-    else
-    {
-      while((ch=fgetc(website) != EOF) 
+    int ch;  
+  
+    while((ch=fgetc(website) != EOF) 
             { 
 		    printf("%c", ch);
             }
@@ -126,9 +119,11 @@ main(char inputCommand[], char userInventory[]) {
      fclose(website); 
 	    
   }  
-  else {
+  else { //the user input an invalid command
 	FILE *website = fopen("room.html", r+);
-	  fprintf(website, "%s", "There was an error reading the given input. Recall that only: DROP n, PLAY, EXIT or REFRESH are valid inputs.");
+	  printf("%s", "<html>");
+	  printf(website, "%s", "<head>There was an error reading the given input. Recall that only: DROP n, PLAY, EXIT or REFRESH are valid inputs.</head>");
+ 	  printf("%s", "</html>");
 	  fclose(website); 
   }
   
@@ -177,7 +172,7 @@ main(char inputCommand[], char userInventory[]) {
 	   fclose(fileInventory);
    }
 
-    void exitUpdateInventory()
+    void exitUpdateInventory(void)
     {
 	// open, read and save the players inventory
 	int inventory[2];

@@ -27,15 +27,16 @@ main(char inputCommand[], char userInventory[]) {
     //data received will have the following format: 
     //file:///C:/Users/JustineTupe/Desktop/index.htm?command=DROP+10&firstname=Mickey&lastname=Mouse
     //reads input until the first '='
-    for(int i = 0; i<200 && input[i]]!='='; i++);
+    for(int i = 0; input[i]!='='; i++);{
     //reads the String until first '&'
-    for(int j = i; i<200 && input[i]!='&'; i++)
+    for(int j = i; input[i]!='+'; i++)
     {
       //saves the command into command array
-      command[i] = input[i];
+      command[j] = input[i];
+    }
     }
     //turns command array into a string by adding a CR
-    command[i] = "\0";
+    command[j] = "\0";
     //Alice: I think the loop is not saving the drop, but copying everything before the "="
     /*instead should be 
     for (int i = 0; input[i]!='='; i++);{
@@ -51,19 +52,18 @@ main(char inputCommand[], char userInventory[]) {
 
     //read user input to extract the number of gold pieces to drop
     //reads input until next '+'
-    for(int k = 0; k < 200 && input[k]!='+'; k++);
+    for(int k = 0; input[k]!='+'; k++);{
     //reads input until next '&'
-    for(int m = k; m < 200 && input[m]!='&'; k++)
+    for(int m = k; input[m]!='&'; k++)
     {
       //saves 
-      goldDropArray[i] = input[i];
+      goldDropArray[j] = input[i];
     }
+    }
+	  goldDropArray[j] = "\0";
     goldDrop = atoi(goldDropArray);
   }
 }
-  //Alice: same thing for this loop, need to change to goldDropArray[j] = input[i]
-  //Command = "drop", GoldDrop = 10;
-
 
   char * DROP = "DROP", PLAY = "PLAY", EXIT = "EXIT", REFRESH = "REFRESH";
   
@@ -77,55 +77,44 @@ main(char inputCommand[], char userInventory[]) {
     FILE *website = fopen("room.html", r+);
     int ch;
     
-    printf("Content-Type:text/html\n\n");
-    printf("<html>");
-    
     if(website == NULL);
     {
-      printf("<head><title>ERROR</title></head>");
-      printf("<body><p>Unable to open file!</p></body>");
+      printf("%s", "<head><title>ERROR</title></head>");
+      printf("%s", "<body><p>Unable to open file!</p></body>");
     }
     else
     {
       while((ch=fgetc(website) != EOF) 
 	  { 
-	  putchar(ch);
+		  printf("%c", ch);
 	  }
      }
      fclose(website); 
-     printf("</html>");
   }
   
   else if(strncmp(command, PLAY, 4) == 0)
   {
     //execute code for PLAY
-    FILE *game = fopen("game.c", r);
+    FILE *challenge = fopen("challenge.c", r);
     int ch;
-    
-    printf("Content-Type:text/html\n\n");
-    printf("<html>");
-    
-    if(game == NULL);
-    {
-      printf("<head><title>ERROR</title></head>");
-      printf("<body><p>Unable to open file!</p></body>");
-    }
-    else
-    {
-      while((ch=fgetc(game) != EOF) 
-            { 
-              putchar(ch);
-            }
-     }
-     fclose(game); 
-     printf("</html>");
+	  
+	  while((ch=fgetc(challenge) != EOF) { 
+			printf("%c", ch);
+		}
+		
+    fclose(challenge);
   }
   
   else if(strncmp(command, EXIT, 4) == 0)
   {
+	  FILE *website = fopen("room.html", r+);
     //execute code for EXIT
-    //must rewrite the html page with a sorry to see you go screen
     //must update the resources file so that the room is unoccupied (resources[3] = 0)
+	  printf("%s", "<html>");
+	  printf("%s", "<head><title>Bye! Au Revoir!</title><h1>Aw shucks! Leaving already? Prison isn't for everyone. Come back later, if you dare.</h1>");
+	  printf("%s", "<h2>Quel dommamge! Vous-partez deja? Je comprends. La prison ce n'est pas pour tout le monde. Reviennez plutard, si vous l'osez faire.");
+	  printf("%s", "</head></html>");
+	  fclose(website);
   }
   
   else if(strncmp(commmand, REFRESH, 7) == 0)
@@ -133,31 +122,25 @@ main(char inputCommand[], char userInventory[]) {
     FILE *website = fopen("room.html", r+);
     int ch;
     
-    printf("Content-Type:text/html\n\n");
-    printf("<html>");
-    
     if(website == NULL);
     {
-      printf("<head><title>ERROR</title></head>");
-      printf("<body><p>Unable to open file!</p></body>");
+      printf("%s", "<head><title>ERROR</title></head>");
+      printf("%s", "<body><p>Unable to open file!</p></body>");
     }
     else
     {
       while((ch=fgetc(website) != EOF) 
             { 
-              putchar(ch);
+		    printf("%c", ch);
             }
      }
      fclose(website); 
-     printf("</html>");
+	    
   }  
   else {
 	FILE *website = fopen("room.html", r+);
-	  printf("Content-Type:text/html\n\n");
-	  printf("<html>");
 	  fprintf(website, "%s", "There was an error reading the given input. Recall that only: DROP n, PLAY, EXIT or REFRESH are valid inputs.");
 	  fclose(website); 
-	  printf("</html>");
   }
   
   // we could alt create source files with the methods updateResources and updateInventory and compile it into room.o

@@ -167,7 +167,5 @@ main(char inputCommand[]) {
 	char comma = ",";
      	fprintf(fileInventory, "%d, %c, %d, %c", playMan, comma, playGold, comma);
 	fclose(fileInventory);
-		 
-	// we could alt create source files with the methods updateResources and updateInventory and compile it into room.o
-	gcc -g -Wall room.c -o room;
+		
 }

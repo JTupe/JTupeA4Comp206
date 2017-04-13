@@ -25,6 +25,42 @@ main(char inputCommand[], char userInventory[]) {
 	}
     
     //data received will have the following format: 
+	 int i=0;
+	 int j=0;
+	 char command[300];
+	 char inventory[100];
+    if(input[0]=='c')){{
+	    while((i<len+1)&&input[i]!='='){
+		    i++;
+	    }
+	    while((i<len+1)&&input[i]!='&'){
+		    if(input[i]=='+'){
+			    command[j]=' ';
+			    j++;
+			    i++;
+		    }
+		    else{
+			    command[j]=input[i];
+			    j++;
+			    i++;
+		    }
+	    }
+	    command[j]='/0';
+	    j=0;
+	    while((i<len+1)&&(input[i]!='=')){
+		    inventory[j]=input[i];
+		    j++;
+		    i++;
+	    }
+    }
+	    
+	    //This is a command
+	    
+    }
+    if(input[0]=='i'){
+	    //This is inventory
+    }
+	    
     //file:///C:/Users/JustineTupe/Desktop/index.htm?command=DROP+10
     //reads input until the first '='
     for(int i = 0; input[i]!='='; i++);{

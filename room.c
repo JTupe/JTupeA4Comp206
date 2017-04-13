@@ -1,11 +1,6 @@
 #include<stdlib.h>
 #include<stdio.h>
 
-// include the methods of the file //
-void updateInventory(int);
-void updateResources(int);
-void exitUpdateInventory(void);
-
 main(char inputCommand[]) {
 	char input[200], command[200];
 	char inventoryManna[200], inventoryGold[200], goldDropArray[200];
@@ -18,7 +13,7 @@ main(char inputCommand[]) {
 	fscanf(fileResources, "%d,%[^,],%d,%[^,],%d", &rmMan, &rmGold, &occ);
 	// we will fclose(fileResources) at the very end of this file.
 	
-	while((c = getchar()) != EOF && c < len){
+	while((c = getchar()) != EOF && c < len+1){
 		fgets(input,len+1,stdin);
 	}
 		
@@ -29,7 +24,7 @@ main(char inputCommand[]) {
 		}
     
 		//data received will have the following format: 
-    		//file:///C:/Users/JustineTupe/Desktop/index.htm?command=DROP+10&inventory=10%10
+    		//...index.htm?command=DROP+10&inventory=10%10
     		//reads input until the first '='
 		for(int i = 0; input[i]!='='; i++);
 		{
@@ -63,15 +58,14 @@ main(char inputCommand[]) {
 		{
 			for(int j = i; i<len+1 && input[i]!='='; i++);
 			{
-				for(int k = i; i < len+1 && input[i]!='%'; i++)
+				for(int k = i; i < len+1 && input[i]!='%'; i++);
 				{
 					inventoryManna[k] = input[i];
-				}
-				
-				// read hidden tag for the inventoryGold
-				for(int l = i; i < len+1 && input[i]!='\0'; i++)
-				{
-					inventoryGold[l] = input[i];
+					//read for the Player's Gold
+					for(int l = i; i < len+1 && input[i]!='\0'; i++)
+					{
+						inventoryGold[l] = input[i];
+					}
 				}
 			}
 		}
@@ -80,32 +74,51 @@ main(char inputCommand[]) {
 
 		int playMan = atoi(inventoryManna);
 		int playGold = atoi(inventoryGold);
-		
-		
-  // test for which command the user input. Run the code accordingly
-  if(strncmp(command, "DROP", 4) == 0)
-  {
-	  int manAdd = goldDrop / 2;
-	  
-	  playGold = playGold - goldDrop;
-	  playMan = playMan + manAdd;
-	  rmGold = rmGold + goldDrop;
-
-  }
-  
-  else if(strncmp(command, "PLAY", 4) == 0)
-  {
-    //execute code for PLAY
-    FILE *challenge = fopen("../challenge.c", r);
-    int ch;
-	  
-	while((ch=fgetc(challenge) != EOF) 
-	{ 
-		printf("%c", ch);
+	
+	// test for which command the user input. Run the code accordingly
+	if(strncmp(command, "DROP", 4) == 0)
+	{
+		if(goldDrop > playGold) 
+		{
+			//invalid input, refresh the page
+			printf("Content-Type:text/html\n\n");
+			printf("<html><head><center><title> The Room</title></head><body bgcolor=\"grey\"><h1>Welcome to your room / Bienvenue dans votre chambre</h1><p><i>An eternity of terror awaits you / Une eternite de terreur vous attend</i></p>");
+			printf("<center><p><img src=\" https://aos.iacpublishinglabs.com/question/aq/700px-394px/what-is-the-size-of-a-prison-cell_a3b78e5d-2784-49d5-bf43-44bf4fbfd908.jpg?domain=cx.aos.ask.com\"></p>");	
+			printf("<form action=\"https://www.cs.mcgill.ca/~aturim/cgi-bin/transporter.py\" method=\"post\" stlye=\"display\": inLine\"><input type=\"hidden\" name=\"inventory\" value=\"%d,%d\">",playMan,playGold);
+			printf("<input type=\"hidden\" name=\"URL\" value=\"https://www.cs.mcgill.ca/~aturim/cgi-bin/room.cgi\"><input type=\"submit\" value=\"North\"></form><br>");				
+			printf("<form action=\"https://www.cs.mcgill.ca/~aturim/cgi-bin/transporter.py\" method=\"post\" style=\"display: inLine\"><input type=\"hidden\" name=\"inventory\" value=\"%d,%d\">",playMan,playGold);
+			printf("<input type=\"hidden\" name=\"URL\" value=\"https://www.cs.mcgill.ca/~aturim/cgi-bin/room.cgi\"><input type=\"submit\" name=\"button\" value=\"West\"");
+			printf("</form><form action=\"https://www.cs.mcgill.ca/~aturim/cgi-bin/transporter.py\" method=\"post\" style=\"display: inLine\"><input type=\"hidden\" name=\"inventory\" value=\"%d,%d\">",playMan,playGold");
+			printf("<input type=\"hidden\" name=\"URL\" value=\"https://www.cs.mcgill.ca/~aturim/room.cgi\"><input type=\"submit\" name=\"button\" value=\"East\"></form><br>");	
+			printf("<form action=\"https://www.cs.mcgill.ca/~aturim/cgi-bin/transporter.py\" method=\"post\" style=\"display: inLine\"><input type=\"hidden\" name=\"inventory\" value=\"%d,%d\">",playMan,playGold");
+			printf("<input type=\"hidden\" name=\"URL\" value=\"https://www.cs.mcgill.ca/~aturim/room.cgi\"><input type=\"submit\" name=\"button\" value=\"South\"></form><br>");
+			printf("<p>Type in Command. Valid actions are PLAY, DROP n, EXIT, REFRESH</p><div><form action=\"https://www.cs.mcgill.ca/~aturim/room.cgi\"method=\"post\" id=\"textbox\" style=\"display: inline\"></div><div>");
+			printf("<label>COMMAND:<input name=\"command\" size=\"20\"></label></div><input type=\"hidden\" value=\"%d,%d\">",playMan,playGold");
+			printf("name=\"inventory\"></form><div><b><u>Current Player Inventory</u></b></div><b>MANNA: </b> %d<b>GOLD:</b>%d</center></body></html>",playMan, playGold);
+		}
+		else //change the inventory and resource values
+		{
+			int manAdd = (int)goldDrop / 2;
+			
+			playGold = playGold - goldDrop;
+			playMan = playMan + manAdd;
+			rmGold = rmGold + goldDrop;
+		}
 	}
+	
+	else if(strncmp(command, "PLAY", 4) == 0)
+	{
+		//execute code for PLAY
+		FILE *challenge = fopen("../challenge.c", r);
+		int ch;
 		
-    fclose(challenge);
-  }
+		while((ch=fgetc(challenge) != EOF) 
+		{ 
+			printf("%c", ch);
+		}
+		      
+		fclose(challenge);
+	 }
   
   else if(strncmp(command, "EXIT", 4) == 0)
   {
@@ -155,6 +168,20 @@ main(char inputCommand[]) {
 	  printf("<label>COMMAND:<input name=\"command\" size=\"20\"></label></div><input type=\"hidden\" value=\"%d,%d\">",playMan,playGold");
 	  printf("name=\"inventory\"></form><div><b><u>Current Player Inventory</u></b></div><b>MANNA: </b> %d<b>GOLD:</b>%d</center></body></html>",playMan, playGold);
   }
+		 
+	if(playGold >= 100)
+	{
+		printf("Content-Type:text/html\n\n");
+		printf("<html><head><title>YOU WON! VOUS AVEZ GAGNE</title><h1>Congrats! Felicitations!</h1>");
+		printf("</head></html>");
+	}
+	
+	if (playGold <= 0)
+	{
+		printf("Content-Type:text/html\n\n");
+		printf("<html><head><title>You ran out of gold! Vous n'avez pas assez d'ors!</title><h1>You lost. *sad* Vous avez perdu. *tristesse*</h1>");
+		printf("</head></html>");
+	}
 		 
 	// update the resource file
 	char comma = ",";

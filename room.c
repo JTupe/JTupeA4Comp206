@@ -29,12 +29,12 @@ main(char inputCommand[]) {
 		}
     
 		//data received will have the following format: 
-    		//file:///C:/Users/JustineTupe/Desktop/index.htm?command=DROP+10&inventory=10,10
+    		//file:///C:/Users/JustineTupe/Desktop/index.htm?command=DROP+10&inventory=10%10
     		//reads input until the first '='
 		for(int i = 0; input[i]!='='; i++);
 		{
-			//reads the String until first '&'
-			for(int j = i; input[i]!='+'; i++)
+			//reads the input until first '&'
+			for(int j = i; input[i]!='&'; i++)
 			{
 				//saves the command into command array
 				command[j] = input[i];
@@ -58,16 +58,26 @@ main(char inputCommand[]) {
 		int goldDrop = atoi(goldDropArray);
 		
 		// read hidden tag for the inventoryManna
-		for(int i = 0; i < len+1 && input[i]!='='; i++); 
+		//Desktop/index.htm?command=DROP+10&inventory=10%10
+		for(int i = 0; i < len+1 && input[i]!='&'; i++); 
 		{
-			for(int j = i; i<len+1 && input[i]!='%'; i++)
+			for(int j = i; i<len+1 && input[i]!='='; i++);
 			{
-				inventoryManna[j] = input[i];
+				for(int k = i; i < len+1 && input[i]!='%'; i++)
+				{
+					inventoryManna[k] = input[i];
+				}
+				
+				// read hidden tag for the inventoryGold
+				for(int l = i; i < len+1 && input[i]!='\0'; i++)
+				{
+					inventoryGold[l] = input[i];
+				}
 			}
 		}
-		inventory[j]='\0';
-		// read hidden tag for the inventoryGold
-		
+		inventoryManna[k]='\0';
+		inventoryGold[l] = '\0';
+
 		int playMan = atoi(inventoryManna);
 		int playGold = atoi(inventoryGold);
 		
@@ -125,7 +135,7 @@ main(char inputCommand[]) {
 	  printf("<input type=\"hidden\" name=\"URL\" value=\"https://www.cs.mcgill.ca/~aturim/room.cgi\"><input type=\"submit\" name=\"button\" value=\"East\"></form><br>");	
 	  printf("<form action=\"https://www.cs.mcgill.ca/~aturim/cgi-bin/transporter.py\" method=\"post\" style=\"display: inLine\"><input type=\"hidden\" name=\"inventory\" value=\"%d,%d\">",playMan,playGold");
 	  printf("<input type=\"hidden\" name=\"URL\" value=\"https://www.cs.mcgill.ca/~aturim/room.cgi\"><input type=\"submit\" name=\"button\" value=\"South\"></form><br>");
-	  printf("<p>Type in Command. Valid actions are PLAY, Drop n, EXIT, REFRESH</p><div><form action=\"https://www.cs.mcgill.ca/~aturim/room.cgi\"method=\"post\" id=\"textbox\" style=\"display: inline\"></div><div>");
+	  printf("<p>Type in Command. Valid actions are PLAY, DROP n, EXIT, REFRESH</p><div><form action=\"https://www.cs.mcgill.ca/~aturim/room.cgi\"method=\"post\" id=\"textbox\" style=\"display: inline\"></div><div>");
 	  printf("<label>COMMAND:<input name=\"command\" size=\"20\"></label></div><input type=\"hidden\" value=\"%d,%d\">",playMan,playGold");
 	  printf("name=\"inventory\"></form><div><b><u>Current Player Inventory</u></b></div><b>MANNA: </b> %d<b>GOLD:</b>%d</center></body></html>",playMan, playGold);
   }  
@@ -141,7 +151,7 @@ main(char inputCommand[]) {
 	  printf("<input type=\"hidden\" name=\"URL\" value=\"https://www.cs.mcgill.ca/~aturim/room.cgi\"><input type=\"submit\" name=\"button\" value=\"East\"></form><br>");	
 	  printf("<form action=\"https://www.cs.mcgill.ca/~aturim/cgi-bin/transporter.py\" method=\"post\" style=\"display: inLine\"><input type=\"hidden\" name=\"inventory\" value=\"%d,%d\">",playMan,playGold");
 	  printf("<input type=\"hidden\" name=\"URL\" value=\"https://www.cs.mcgill.ca/~aturim/room.cgi\"><input type=\"submit\" name=\"button\" value=\"South\"></form><br>");
-	  printf("<p>Type in Command. Valid actions are PLAY, Drop n, EXIT, REFRESH</p><div><form action=\"https://www.cs.mcgill.ca/~aturim/room.cgi\"method=\"post\" id=\"textbox\" style=\"display: inline\"></div><div>");
+	  printf("<p>Type in Command. Valid actions are PLAY, DROP n, EXIT, REFRESH</p><div><form action=\"https://www.cs.mcgill.ca/~aturim/room.cgi\"method=\"post\" id=\"textbox\" style=\"display: inline\"></div><div>");
 	  printf("<label>COMMAND:<input name=\"command\" size=\"20\"></label></div><input type=\"hidden\" value=\"%d,%d\">",playMan,playGold");
 	  printf("name=\"inventory\"></form><div><b><u>Current Player Inventory</u></b></div><b>MANNA: </b> %d<b>GOLD:</b>%d</center></body></html>",playMan, playGold);
   }

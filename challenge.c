@@ -88,6 +88,7 @@ int main(){
 				fscanf(inventory_p, "%d,[^,], %d", &playMan, &playGold);
 				rmMan = rmMan-requested_manna;
 				rmGold = rmGold-requested_gold;
+				//this is what I was telling you in the fb chat - you can have these fprintf statements at the very end!
 				fprintf(resources_p, "%d,%c,%d,%c,%d", rmMan, comma, rmGold, comma, occ);
 				//shouldn't you updated the player's inventory as well? If so, add the following:
 				//playMan = playMan+requested_manna;

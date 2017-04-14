@@ -14,7 +14,7 @@ int main(void) {
 	FILE *fileInventory;
 	FILE *fileResources;
 	fileResources = fopen("resources.csv", "r+");
-	fscanf(fileResources, "%d,%[^,],%d,%[^,],%d", &rmMan, &rmGold, &occ);
+	fscanf(fileResources, "%d,[^,],%d,[^,],%d", &rmMan, &rmGold, &occ);
 	/* we will fclose(fileResources) at the very end of this file. */
 
 	/* open inventory file to write to it later in the code*/

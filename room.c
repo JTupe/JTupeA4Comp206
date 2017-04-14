@@ -185,6 +185,8 @@ int main(void) {
 	
 	if (playMan <= 0)
 	{
+		rmGold = rmGold + playGold;
+		
 		printf("Content-Type:text/html\n\n");
 		printf("<html><head><title>You ran out of manna! Vous n'avez pas assez de manne!</title><h1>You lost. *sad* Vous avez perdu. *tristesse*</h1>");
 		printf("</head></html>");

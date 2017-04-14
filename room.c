@@ -13,12 +13,12 @@ int main(void) {
 	int rmMan, rmGold, occ, playMan, playGold, goldDrop;
 	FILE *fileInventory;
 	FILE *fileResources;
-	fileResources = fopen("resources.csv", "r+");
+	fileResources = fopen("../resources.csv", "r+");
 	fscanf(fileResources, "%d,[^,],%d,[^,],%d", &rmMan, &rmGold, &occ);
 	/* we will fclose(fileResources) at the very end of this file. */
 
 	/* open inventory file to write to it later in the code*/
-	fileInventory = fopen("inventory.csv", "r+");
+	fileInventory = fopen("../inventory.csv", "r+");
 	
 	while((c = getchar()) != EOF && c < len+1){
 		fgets(input,len+1,stdin);
@@ -116,7 +116,7 @@ int main(void) {
 	else if(strncmp(command, "PLAY", 4) == 0)
 	{
 		/* execute code for PLAY */
-		FILE *challenge = fopen("../challenge.c", "r");
+		FILE *challenge = fopen("challenge.c", "r");
 		int ch;
 		
 		while((ch=fgetc(challenge)) != EOF) 
@@ -183,10 +183,10 @@ int main(void) {
 		printf("</head></html>");
 	}
 	
-	if (playGold <= 0)
+	if (playMan <= 0)
 	{
 		printf("Content-Type:text/html\n\n");
-		printf("<html><head><title>You ran out of gold! Vous n'avez pas assez d'ors!</title><h1>You lost. *sad* Vous avez perdu. *tristesse*</h1>");
+		printf("<html><head><title>You ran out of manna! Vous n'avez pas assez de manne!</title><h1>You lost. *sad* Vous avez perdu. *tristesse*</h1>");
 		printf("</head></html>");
 	}
 		 
@@ -195,7 +195,7 @@ int main(void) {
 	fclose(fileResources);
 	
 	/* update the inventory file */
-    fprintf(fileInventory, "%d, %c, %d, %c", playMan, comma, playGold, comma);
+	fprintf(fileInventory, "%d, %c, %d, %c", playMan, comma, playGold, comma);
 	fclose(fileInventory);
 	
 	return 0;

@@ -10,7 +10,7 @@
 //test it by setting up what opens the program (aka PLAY command in room.c)
 
 //JUSTINE'S COMMENTS
-//I think you need to add QUIT as an option in the if-loop to leave the game!
+//I think you need to add EXIT as an option in the if-loop to leave the game!
 //remember that you can only initialize ANY variables/open ANY file in the beginning of the code
 //also C does not accept commments like "// //" this, it will not compile it. You MUST comment with "/* */"
 //WHENEVER you print a page it must begin with these:

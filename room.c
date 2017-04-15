@@ -20,6 +20,7 @@ int main(void) {
 	/* open inventory file to write to it later in the code*/
 	fileInventory = fopen("../inventory.csv", "r+");
 	
+	/* save the query string into an array called input */
 	fgets(input,len+1,stdin);
 		
 		if(input == NULL) 

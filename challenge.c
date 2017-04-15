@@ -25,7 +25,14 @@
 // hide the 4 buttons in the HTML page - requires you to reprint the page (just copy and paste)
 int main(){
 
-	//printf("<p>Welcome to this challenge! Please guess a number between 1 and 6</p>");
+	printf("<p>Welcome to this challenge! Please guess a number between 1 and 6</p>");
+	printf("<FORM ACTION=\"http://www.cs.tut.fi/cgi-bin/run/~jkorpela/collect.cgi\""
+ 		"METHOD=\"POST\">"
+		"<DIV>Your number (between 1 and 6):<BR>"	
+<INPUT NAME="number" SIZE="6" MAXLENGTH="10"><BR>
+	<INPUT TYPE="SUBMIT" VALUE="Go"></DIV>
+	</FORM>);
+
 	int requested_gold, requested_manna;
 	int rmMan, rmGold, occ, playMan, playGold;
 	FILE *resources_p;
@@ -34,22 +41,24 @@ int main(){
 	inventory_p = fopen("../inventory.csv", "w+");
 	char *data = getenv("QUERY_STRING");
 	printf("%s", data);
-	int number = 4;
-	//int number; // assume we fetched this from cgi by talking to your teammate
-	srand((unsigned)time(NULL));   // should only be called once
+	// assume we fetched this from cgi by talking to your teammate
+	srand((unsigned)time(NULL));
 	int random_number = rand() % 7; // rand%n means generate from 0 to n-1
 
-
-	if(number >=1 && number <=6){
+	printf("<FORM ACTION=\"http://www.cs.tut.fi/cgi-bin/run/~jkorpela/room.cgi\""
+	 		"METHOD=\"POST\">"
+		<INPUT TYPE="SUBMIT" VALUE="Exit"></DIV>
+		</FORM>);
+		if(number >=1 && number <=6){
 
 	
 		if (random_number == number){
-			//Modify resourses.txt. Change to .csv later
+			
 			if(resources_p == NULL) { printf("Content-Type:text/html\n\n"); printf("<html><head>There was an error reading the given input. Recall that only: DROP n, PLAY, EXIT or REFRESH are valid inputs.</head></html>"); return(-1); }
 			fscanf(resources_p, "%d,[^,],%d,[^,],%d", &rmMan, &rmGold, &occ);
-			//I assumed I can make the game rules, which is gold +10. But in the assignment prof says 
+			printf("<p>Congratulations! You guessed right.</p></html>");
+		
 			//when they win, they get access to the hidden resources in the room, and they can take 5 of anything (2 gold 3 manna for example)
-			//resources[1]=     resources[1] +10;
 			
 			printf("Content-Type:text/html\n\n");
 			printf("<html><p>this is the room's resources: %d manna and %d gold</p>", rmMan, rmGold);
@@ -67,17 +76,20 @@ int main(){
 			if (requested_gold + requested_manna > 5){
 				printf("<p>The total request units is beyond 5. Please insert a new combination of manna and gold.</p></html>");
 				//shouldn't you resend the form here?
+				system("./challenge.cgi");
 				return -1;
 			}
 			
 			if (requested_gold > rmGold){
 				printf("<p>The room does not have enough gold. Please insert a new combination of manna and gold.</p></html>");
+				system("./challenge.cgi");
 				//shouldn't you resend the form here?
 				return -1;
 			}
 			
 			if(requested_manna > rmMan){
 				printf("<p>The room does not have enough manna. Please insert a new combination of manna and gold.</p></html>");
+				system("./challenge.cgi");
 				//shouldn't you resend the form here?
 				return -1;
 			}
@@ -86,56 +98,42 @@ int main(){
 				// make changes and update resources file
 				if(inventory_p == NULL) { printf("Content-Type:text/html\n\n"); printf("<head>There was an error reading the given input. Recall that only: DROP n, PLAY, EXIT or REFRESH are valid inputs.</head></html>"); return(-1); }
 				fscanf(inventory_p, "%d,[^,], %d", &playMan, &playGold);
-				rmMan = rmMan-requested_manna;
-				rmGold = rmGold-requested_gold;
+				rmMan = rmMan+requested_manna;
+				rmGold = rmGold+requested_gold;
 				//this is what I was telling you in the fb chat - you can have these fprintf statements at the very end!
 				fprintf(resources_p, "%d,%c,%d,%c,%d", rmMan, comma, rmGold, comma, occ);
 				//shouldn't you updated the player's inventory as well? If so, add the following:
-				//playMan = playMan+requested_manna;
-				//playGold = playGold+requested_gold;
-				//fprintf(inventory_p, ""%d,%c,%d", playMan, comma, playGold, comma);
+				playMan = playMan-requested_manna;
+				playGold = playGold-requested_gold;
+				fprintf(inventory_p, "%d,%c,%d", playMan, comma, playGold, comma);
 				fclose(resources_p);
-				//fclose(inventory_p);
+				fclose(inventory_p);
 				return 1;
 			}
 		}
 
-    		//i print resources, then get input from the user, read the text, then update the scv
-
-			//change their inventory in accordance
-			/*int inventory[2];
-			FILE *inventory_p=fopen("http://www.cs.mcgill.ca/~gzhang16/cgi-bin/inventory.csv");
-			if(inventory_p == NULL) { perror("Error opening resource file"); return(-1); }
-    
-    		inventory[1]=     inventory[1] +10;
-    		fprintf(inventory_p, "%d, %d,%d", resources[0], resources[1], resources[2]);
-    		fclose(inventory_p);
-    		*/
-
-
-    		//Print to HTML directly
-    		//TODO: Print HTML"Congrats"
 
 		else if (random_number != number){
 			printf("Content-Type:text/html\n\n");
 			printf("<html><p>Wrong guess! Try again.</p>");
-			printf("<meta http-equiv='refresh' content='0;url=http://www.cs.mcgill.XXXX/challenge.cgi'></html>");
-			//shouldn't you redraw the game?
-			//return 0;
+			//printf("<meta http-equiv='refresh' content='0;url=http://www.cs.mcgill.XXXX/challenge.cgi'></html>");
+			system("./challenge.cgi");
+			return 0;
 		}
 		
-		else (number != 1:6) {
+		else {
 			printf("Content-Type:text/html\n\n");
 			printf("<html><p>Invalid entry. Enter number between 1 and 6.</p>");
-			printf("<meta http-equiv='refresh' content='0;url=http://www.cs.mcgill.XXXX/challenge.cgi'></html>");
-			//should you redraw the game?
-			//return 0;
+			//printf("<meta http-equiv='refresh' content='0;url=http://www.cs.mcgill.XXXX/challenge.cgi'></html>");
+			system("./challenge.cgi");
+			return 0;
 		}
+
+
+
 }
 
 
 
 
-//html receives 1, it needs to print congrats, and show room resources
-//if it receives 0, print play again
-//Justine for opening and overwriting in csv, you need to use w+ instead of r+
+

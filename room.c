@@ -10,7 +10,7 @@ int main(void) {
 	/* declare ints for the for loops */
 	int i, j, k, l, p, m, n;
 	/* to read how many resources are in the room */
-	int rmMan, rmGold, occ, playMan, playGold, goldDrop;
+	int rmMan, rmGold, occ, playMan, playGold, goldDrop, manAdd;
 	FILE *fileInventory;
 	FILE *fileResources;
 	fileResources = fopen("../resources.csv", "r+");
@@ -20,9 +20,7 @@ int main(void) {
 	/* open inventory file to write to it later in the code*/
 	fileInventory = fopen("../inventory.csv", "r+");
 	
-	while((c = getchar()) != EOF && c < len+1){
-		fgets(input,len+1,stdin);
-	}
+	fgets(input,len+1,stdin);
 		
 		if(input == NULL) 
 		{ 
@@ -30,34 +28,32 @@ int main(void) {
 			printf("<html><head>There was an error reading the given input. Recall that only: DROP n, PLAY, EXIT or REFRESH are valid inputs.</head></html>");
 		}
     
-		/* data received will have the following format: */
-    	/* ...index.htm?command=DROP+10&inventory=10%10 */
+	/* data received will have the following format: */
+    	/* ...index.htm?command=EXIT&inventory=10%10 */
     	/* reads input until the first '=' */
 		for(i = 0; input[i]!='='; i++);
 		{
 			/* reads the input until first '&' */
 			for(j = i; input[i]!='&'; i++)
 			{
-				/* saves the command into command array */
-				command[j] = input[i];
+				if(input[i] == '+'){ /* command is DROP+n */
+					command[j]=' ';
+					/* save the n pieces of gold to drop into diff array */
+					/* reads input until next '&' */
+						for(j = i; input[i]!='&';i++){
+							goldDropArray[j] = input[i];
+						}
+				}
+				goldDropArray[j] = '\0';
+				goldDrop = atoi(goldDropArray);
+				else{
+					/* saves the command into command array */
+					command[j] = input[i];
+				}
 			}
 		}
 		/* turns command array into a string by adding a CR */
 		command[j] = '\0';
-		
-		/* read user input to extract the number of gold pieces to drop */
-		/* reads input until first '+' */
-		for(k = 0; input[k]!='+'; k++);
-		{
-			/* reads input until next '&' */
-			for(m = k; input[m]!='&'; k++)
-			{
-				/* saves */
-				goldDropArray[j] = input[i];
-			}
-		}  
-		goldDropArray[j] = '\0';
-		goldDrop = atoi(goldDropArray);
 		
 		/* read hidden tag for the inventoryManna */
 		/* Desktop/index.htm?command=DROP+10&inventory=10%10 */
@@ -65,12 +61,16 @@ int main(void) {
 		{
 			for(; n<len+1 && input[n]!='='; n++);
 			{
-				for(p = n; i < len+1 && input[n]!='%'; n++);
+				/* read for Player's Manna */
+				for(p = n; n < len+1 && input[n]!='%'; n++);
 				{
+					/* saves players manna */
 					inventoryManna[p] = input[n];
+					
 					/* read for the Player's Gold */
 					for(l = n; n < len+1 && input[n]!='\0'; n++)
 					{
+						/* saves players gold */
 						inventoryGold[l] = input[n];
 					}
 					inventoryGold[l] = '\0';
@@ -78,7 +78,6 @@ int main(void) {
 				inventoryManna[p] = '\0';
 			}
 		}
-
 		playMan = atoi(inventoryManna);
 		playGold = atoi(inventoryGold);
 	
@@ -105,7 +104,7 @@ int main(void) {
 		}
 		else /* change the inventory and resource values */
 		{
-			int manAdd = (int)goldDrop / 2;
+			manAdd = (int)goldDrop / 2;
 			
 			playGold = playGold - goldDrop;
 			playMan = playMan + manAdd;

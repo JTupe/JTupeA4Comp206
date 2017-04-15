@@ -59,27 +59,23 @@ int main(void) {
 		
 		/* read hidden tag for the inventoryManna */
 		/* Desktop/index.htm?command=DROP+10&inventory=10%10 */
-		for(n = 0; n < len+1 && input[n]!='&'; n++) { }
-			n++;
-			for(; n<len+1 && input[n]!='='; n++) { }
-				n++;
+		for(n = 0; n < len+1 && input[n]!='&'; n++) { } n++;
+			for(; n<len+1 && input[n]!='='; n++) { } n++;
 				for(p = n; i < len+1 && input[n]!='%'; n++)
 				{
 					inventoryManna[p] = input[n];
 					/* read for the Player's Gold */
-					if(input[n] = '%'){
-						n++;
-						for(l = n; n < len+1 && input[n]!='\0'; n++) {
+					if(input[n] = '%'){ n++;
+						for(l = n; input[n]!='\0'; n++) {
 							inventoryGold[l] = input[n];
 						}
 					}
 					inventoryGold[l] = '\0';
 				}
 				inventoryManna[p] = '\0';
-			}
-
-			playMan = atoi(inventoryManna);
-			playGold = atoi(inventoryGold);
+	
+	playMan = atoi(inventoryManna);
+	playGold = atoi(inventoryGold);
 	
 	/* test for which command the user input. Run the code accordingly */
 	if(strncmp(command, "DROP", 4) == 0)

@@ -20,9 +20,7 @@ int main(void) {
 	/* open inventory file to write to it later in the code*/
 	fileInventory = fopen("inventory.csv", "r+");
 	
-	while((c = getchar()) != EOF && c < len+1){
 		fgets(input,len+1,stdin);
-	}
 		
 		if(input == NULL) 
 		{ 
@@ -33,54 +31,55 @@ int main(void) {
 		/* data received will have the following format: */
     	/* ...index.htm?command=DROP+10&inventory=10%10 */
     	/* reads input until the first '=' */
-		for(i = 0; input[i]!='='; i++);
-		{
+		for(i = 0; input[i]!='='; i++) { }
+			i++;
 			/* reads the input until first '&' */
 			for(j = i; input[i]!='&'; i++)
 			{
 				/* saves the command into command array */
 				command[j] = input[i];
+				
+				if(input[i] = '+'){
+					/* this means the command=DROP+N&*/
+					/* read read n pieces to drop, save it into the array goldDropArray */
+					i++;
+					for(k = i; input[i]!='&'; k++);{
+						goldDropArray[j] = input[i];
+					}
+				}
+				goldDropArray[j] = '\0';
+				goldDrop = atoi(goldDropArray);
+				
+				else{
+					command[j] = input[i];
+				}
 			}
-		}
 		/* turns command array into a string by adding a CR */
 		command[j] = '\0';
 		
-		/* read user input to extract the number of gold pieces to drop */
-		/* reads input until first '+' */
-		for(k = 0; input[k]!='+'; k++);
-		{
-			/* reads input until next '&' */
-			for(m = k; input[m]!='&'; k++)
-			{
-				/* saves */
-				goldDropArray[j] = input[i];
-			}
-		}  
-		goldDropArray[j] = '\0';
-		goldDrop = atoi(goldDropArray);
-		
 		/* read hidden tag for the inventoryManna */
 		/* Desktop/index.htm?command=DROP+10&inventory=10%10 */
-		for(n = 0; n < len+1 && input[n]!='&'; n++); 
-		{
-			for(; n<len+1 && input[n]!='='; n++);
-			{
-				for(p = n; i < len+1 && input[n]!='%'; n++);
+		for(n = 0; n < len+1 && input[n]!='&'; n++) { }
+			n++;
+			for(; n<len+1 && input[n]!='='; n++) { }
+				n++;
+				for(p = n; i < len+1 && input[n]!='%'; n++)
 				{
 					inventoryManna[p] = input[n];
 					/* read for the Player's Gold */
-					for(l = n; n < len+1 && input[n]!='\0'; n++)
-					{
-						inventoryGold[l] = input[n];
+					if(input[n] = '%'){
+						n++;
+						for(l = n; n < len+1 && input[n]!='\0'; n++) {
+							inventoryGold[l] = input[n];
+						}
 					}
 					inventoryGold[l] = '\0';
 				}
 				inventoryManna[p] = '\0';
 			}
-		}
 
-		playMan = atoi(inventoryManna);
-		playGold = atoi(inventoryGold);
+			playMan = atoi(inventoryManna);
+			playGold = atoi(inventoryGold);
 	
 	/* test for which command the user input. Run the code accordingly */
 	if(strncmp(command, "DROP", 4) == 0)

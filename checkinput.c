@@ -11,8 +11,9 @@ int main(void) {
   printf("Content-Type:text/html\n\n");
   printf("<html>");
     
-  while( i < (len+1)){
+  while( input[i] < (len+1)){
     printf("%d", i);
+    i++;
   }
   
   printf("</html">);

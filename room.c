@@ -57,7 +57,6 @@ int main(void) {
 		
 		/* read hidden tag for the inventoryManna */
 		/* Desktop/index.htm?command=DROP+10&inventory=10%10 */
-		for(n = i; n<(len+1) && input[n]!='&'; n++) { } n++;
 			for(n; n<(len+1) && input[n]!='='; n++) { } n++;
 				for(p = 0; input[n]!='%'; n++)
 				{

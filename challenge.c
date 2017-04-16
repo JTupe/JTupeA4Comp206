@@ -25,7 +25,8 @@
 // hide the 4 buttons in the HTML page - requires you to reprint the page (just copy and paste)
 int main(){
 
-	printf("<p>Welcome to this challenge! Please guess a number between 1 and 6</p>");
+	printf("Content-Type:text/html\n\n");
+	printf("<html><p>Welcome to this challenge! Please guess a number between 1 and 6</p>");
 	printf("<FORM ACTION=\"http://cs.mcgill.ca/~aturim/challenge.cgi\""
  			"METHOD=\"POST\">"
 			"<DIV>Your number (between 1 and 6):<BR>"	
@@ -64,15 +65,14 @@ int main(){
 	
 			if (random_number == number){
 			
-				if(resources_p == NULL) { printf("Content-Type:text/html\n\n");
-					printf("<html><head>There was an error reading the given input. Recall that only: DROP n, PLAY, EXIT or REFRESH are valid inputs.</head></html>"); return(-1); }
+				if(resources_p == NULL) {
+					printf("<head>There was an error reading the given input. Recall that only: DROP n, PLAY, EXIT or REFRESH are valid inputs.</head></html>"); return(-1); }
 					fscanf(resources_p, "%d,[^,],%d,[^,],%d", &rmMan, &rmGold, &occ);
 					printf("<p>Congratulations! You guessed right.</p></html>");
 							
 					//when they win, they get access to the hidden resources in the room, and they can take 5 of anything (2 gold 3 manna for example)
 			
-					printf("Content-Type:text/html\n\n");
-					printf("<html><p>this is the room's resources: %d manna and %d gold</p>", rmMan, rmGold);
+					printf("<p>this is the room's resources: %d manna and %d gold</p>", rmMan, rmGold);
 			
 					printf("<form>"
 			       		   "manna: "
@@ -80,7 +80,7 @@ int main(){
 			       		   "gold:"
 			       		   "<input type=\"text\" name=\"requested_gold\"/>"
 			       		   "<input type=\"submit\" value=\"Ask for prize!\" /> "
-			               "</form>");
+			               "</form></html>");
 				
 			//check how to access the two inputs using their names in cgi
 			//check two things: if two numbers sum up to 5, and if they are less or equal to my resources, if not, promt them to insert again
@@ -107,7 +107,7 @@ int main(){
 			
 				else{
 				// make changes and update resources file
-					if(inventory_p == NULL) { printf("Content-Type:text/html\n\n");
+					if(inventory_p == NULL) {
 					printf("<head>There was an error reading the given input. Recall that only: DROP n, PLAY, EXIT or REFRESH are valid inputs.</head></html>"); return(-1); }
 					fscanf(inventory_p, "%d,[^,], %d", &playMan, &playGold);
 					rmMan = rmMan+requested_manna;
@@ -127,16 +127,14 @@ int main(){
 
 			}
 			else {
-				printf("Content-Type:text/html\n\n");
-				printf("<html><p>Wrong guess! Try again.</p>");
+				printf("<p>Wrong guess! Try again.</p></html>");
 				//printf("<meta http-equiv='refresh' content='0;url=http://www.cs.mcgill.XXXX/challenge.cgi'></html>");
 				system("./challenge.cgi");
 				return 0;
 			}
 		}
 		else {
-			printf("Content-Type:text/html\n\n");
-			printf("<html><p>Invalid entry. Enter number between 1 and 6.</p>");
+			printf("<p>Invalid entry. Enter number between 1 and 6.</p></html>");
 			//printf("<meta http-equiv='refresh' content='0;url=http://www.cs.mcgill.XXXX/challenge.cgi'></html>");
 			system("./challenge.cgi");
 			return 0;

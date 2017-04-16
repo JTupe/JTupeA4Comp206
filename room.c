@@ -6,7 +6,7 @@ int main(void) {
 	char input[200], command[200];
 	char inventoryManna[200], inventoryGold[200], goldDropArray[200];
 	int len = atoi(getenv("CONTENT_LENGTH"));
-	char c, comma = ',';
+	char comma = ',';
 	/* declare ints for the for loops */
 	int i, j, l, p, n;
 	/* to read how many resources are in the room */

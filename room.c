@@ -13,20 +13,23 @@ int main(void) {
 	int rmMan, rmGold, occ, playMan, playGold, goldDrop;
 	FILE *fileInventory;
 	FILE *fileResources;
+	
+	/* open resources file to write to it later in the code*/
 	fileResources = fopen("resources.csv", "r+");
 	fscanf(fileResources, "%d,[^,],%d,[^,],%d", &rmMan, &rmGold, &occ);
 	/* we will fclose(fileResources) at the very end of this file. */
 
 	/* open inventory file to write to it later in the code*/
 	fileInventory = fopen("inventory.csv", "r+");
+	fscanf(fileInventory, "%d,[^,],%d", &playMan, &playGold);
 	
-		fgets(input,len+1,stdin);
+	fgets(input,len+1,stdin);
 		
-		if(input == NULL) 
-		{ 
-			printf("Content-Type:text/html\n\n");
-			printf("<html><head>There was an error reading the given input. Recall that only: DROP n, PLAY, EXIT or REFRESH are valid inputs.</head></html>");
-		}
+	if(input == NULL) 
+	{ 
+		printf("Content-Type:text/html\n\n");
+		printf("<html><head>There was an error reading the given input. Recall that only: DROP n, PLAY, EXIT or REFRESH are valid inputs.</head></html>");
+	}
     
 		/* data received will have the following format: */
 	/* ...index.htm?command=DROP+10&inventory=10%10 */

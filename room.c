@@ -32,7 +32,7 @@ int main(void) {
 	}
     
 		/* data received will have the following format: */
-	/* ...index.htm?command=DROP+10&inventory=10%10 */
+	/* ...room.cgi?command=DROP+10&inventory=10%10 */
     	/* reads input until the first '=' */
 		for(i = 0; i<(len+1) && input[i]!='='; i++) { }
 			i++;
@@ -86,7 +86,7 @@ int main(void) {
 		{
 			/* invalid input, refresh the page */
 			printf("Content-Type:text/html\n\n");
-			printf("<html><head><center><title> The Room</title></head><body bgcolor=\"grey\"><h1>Welcome to your room / Bienvenue dans votre chambre</h1><p><i>An eternity of terror awaits you / Une eternite de terreur vous attend</i></p>");
+			printf("<html><head><center><title> The Room</title></head><body bgcolor=\"grey\"><h1>You don't have enough gold for this! Vous n'avez pas assez d'ors!</h1><p><i>An eternity of terror awaits you / Une eternite de terreur vous attend</i></p>");
 			printf("<center><p><img src=\" https://aos.iacpublishinglabs.com/question/aq/700px-394px/what-is-the-size-of-a-prison-cell_a3b78e5d-2784-49d5-bf43-44bf4fbfd908.jpg?domain=cx.aos.ask.com\"></p>");	
 			printf("<form action=\"https://www.cs.mcgill.ca/~aturim/cgi-bin/transporter.py\" method=\"post\" stlye=\"display\": inLine\"><input type=\"hidden\" name=\"inventory\" value=\"%d,%d\">",playMan,playGold);
 			printf("<input type=\"hidden\" name=\"URL\" value=\"https://www.cs.mcgill.ca/~aturim/cgi-bin/room.cgi\"><input type=\"submit\" value=\"North\"></form><br>");				

@@ -1,2 +1,4 @@
-# JTupeA4Comp206
-for Alice and Anders!
+COMP204A4
+Group Members: Anders Turim, Justine Tupe, Alice Zhang
+
+URL: https://www.cs.mcgill.ca/~aturim/room.html

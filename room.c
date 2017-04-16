@@ -8,7 +8,7 @@ int main(void) {
 	int len = atoi(getenv("CONTENT_LENGTH"));
 	char c, comma = ',';
 	/* declare ints for the for loops */
-	int i, j, k, l, p, m, n;
+	int i, j, l, p, n;
 	/* to read how many resources are in the room */
 	int rmMan, rmGold, occ, playMan, playGold, goldDrop;
 	FILE *fileInventory;
@@ -29,45 +29,45 @@ int main(void) {
 		}
     
 		/* data received will have the following format: */
-    	/* ...index.htm?command=DROP+10&inventory=10%10 */
+	/* ...index.htm?command=DROP+10&inventory=10%10 */
     	/* reads input until the first '=' */
-		for(i = 0; input[i]!='='; i++) { }
+		for(i = 0; i<(len+1) && input[i]!='='; i++) { }
 			i++;
 			/* reads the input until first '&' */
-			for(j = i; input[i]!='&'; i++)
+			for(j = 0; i<(len+1) && input[i]!='&'; i++)
 			{
 				/* saves the command into command array */
 				command[j] = input[i];
+				j++;
 				
 				if(input[i] = '+'){
 					/* this means the command=DROP+N&*/
 					/* read read n pieces to drop, save it into the array goldDropArray */
 					i++;
-					for(k = i; input[i]!='&'; k++);{
+					for(j = 0; i<(len+1) && input[i]!='&'; i++);{
 						goldDropArray[j] = input[i];
+						j++;
 					}
 				}
 				goldDropArray[j] = '\0';
 				goldDrop = atoi(goldDropArray);
-				
-				else{
-					command[j] = input[i];
-				}
 			}
 		/* turns command array into a string by adding a CR */
 		command[j] = '\0';
 		
 		/* read hidden tag for the inventoryManna */
 		/* Desktop/index.htm?command=DROP+10&inventory=10%10 */
-		for(n = 0; n < len+1 && input[n]!='&'; n++) { } n++;
-			for(; n<len+1 && input[n]!='='; n++) { } n++;
-				for(p = n; i < len+1 && input[n]!='%'; n++)
+		for(n = i; n<(len+1) && input[n]!='&'; n++) { } n++;
+			for(n; n<(len+1) && input[n]!='='; n++) { } n++;
+				for(p = 0; input[n]!='%'; n++)
 				{
 					inventoryManna[p] = input[n];
+					p++;
 					/* read for the Player's Gold */
 					if(input[n] = '%'){ n++;
-						for(l = n; input[n]!='\0'; n++) {
+						for(l = 0; n<(len+1) && input[n]!='\0'; n++) {
 							inventoryGold[l] = input[n];
+							l++;
 						}
 					}
 					inventoryGold[l] = '\0';
